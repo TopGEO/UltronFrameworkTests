@@ -1,36 +1,49 @@
 package com.atiurin.sampleapp.tests.espresso
 
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.atiurin.sampleapp.activity.MainActivity
-import com.atiurin.sampleapp.helper.isTextOnScreen
-import com.atiurin.sampleapp.helper.isViewDisplayed
-import com.atiurin.sampleapp.helper.typeText
-import com.atiurin.sampleapp.pages.UIElementPage
+import com.atiurin.sampleapp.steps.ChatSteps
+import com.atiurin.sampleapp.steps.CustomClicksSteps
+import com.atiurin.sampleapp.steps.DashboardSteps
 import com.atiurin.sampleapp.tests.BaseTest
-import com.atiurin.ultron.extensions.tap
+import com.atiurin.ultron.extensions.click
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class ChattingTests: BaseTest() {
-
+class ChattingTests : BaseTest() {
     @get:Rule
-    val activityTestRule = ActivityScenarioRule(MainActivity::class.java)
+    val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Test
-    fun textWithMyFriend() {
-        with(UIElementPage) {
-            isTextOnScreen("Friends")
-            nameChandler.isViewDisplayed()
-            nameChandler.tap()
-            textInput.typeText("Hello Rachel")
+    fun testChatWithMyFriend() {
+        DashboardSteps
+            .checkDashboardIsLoaded()
+            .openChatWithFriend("Chandler Bing")
 
-            messageInputText.isViewDisplayed()
+        ChatSteps
+            .checkChatIsOpenForAddressee("Chandler Bing")
+            .enterTextInChat("Hello from fluent steps!")
+            .sendMessage()
+            .assertMessageIsInChat("Hello from fluent steps!")
+    }
 
-        }
+    @Test
+    fun testCustomClicksPage() {
+        DashboardSteps
+            .checkDashboardIsLoaded()
+            .openBurgerMenu()
+
+        withText("Custom Clicks").click()
+
+        CustomClicksSteps
+            .markAllPositions()
+            .validateAllPositionsAreMarked()
+//            .tapTestButton()
     }
 }
