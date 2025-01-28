@@ -2,17 +2,17 @@ package com.atiurin.sampleapp.steps
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.contrib.DrawerActions
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.atiurin.sampleapp.pages.UIElementPage
-import com.atiurin.ultron.extensions.click
-import com.atiurin.ultron.extensions.isDisplayed
+import com.atiurin.sampleapp.helper.*  // <-- Import your custom methods here
 
 object DashboardSteps {
     fun checkDashboardIsLoaded(): DashboardSteps = apply {
-        UIElementPage.friendsHeader.isDisplayed()
+        UIElementPage.friendsHeader.assertIsViewDisplayed()
     }
 
     fun openChatWithFriend(friendName: String): DashboardSteps = apply {
-        onView(androidx.test.espresso.matcher.ViewMatchers.withText(friendName)).click()
+        onView(withText(friendName)).tap()
     }
 
     fun openBurgerMenu(): DashboardSteps = apply {

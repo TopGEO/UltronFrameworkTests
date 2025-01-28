@@ -1,20 +1,18 @@
 package com.atiurin.sampleapp.steps
 
 import com.atiurin.sampleapp.pages.UIElementPage
-import com.atiurin.ultron.extensions.click
-import com.atiurin.ultron.extensions.isChecked
-
+import com.atiurin.sampleapp.helper.*  // your custom methods
 
 object CustomClicksSteps {
     fun markAllPositions(): CustomClicksSteps = apply {
-        UIElementPage.topLeft.click()
-        UIElementPage.topCenter.click()
-        UIElementPage.topRight.click()
-        UIElementPage.centerRight.click()
-        UIElementPage.bottomRight.click()
-        UIElementPage.bottomCenter.click()
-        UIElementPage.bottomLeft.click()
-        UIElementPage.centerLeft.click()
+        UIElementPage.topLeft.tap()
+        UIElementPage.topCenter.tap()
+        UIElementPage.topRight.tap()
+        UIElementPage.centerRight.tap()
+        UIElementPage.bottomRight.tap()
+        UIElementPage.bottomCenter.tap()
+        UIElementPage.bottomLeft.tap()
+        UIElementPage.centerLeft.tap()
     }
 
     fun validateAllPositionsAreMarked(): CustomClicksSteps = apply {
@@ -29,6 +27,6 @@ object CustomClicksSteps {
     }
 
     fun tapTestButton(): CustomClicksSteps = apply {
-//        UIElementPage.testButton.click()
+         UIElementPage.testButton.tap()
     }
 }
