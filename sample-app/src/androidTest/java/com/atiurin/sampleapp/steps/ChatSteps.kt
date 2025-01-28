@@ -3,14 +3,18 @@ package com.atiurin.sampleapp.steps
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.atiurin.sampleapp.pages.UIElementPage
-import com.atiurin.ultron.core.espresso.recyclerview.withRecyclerView
-import com.atiurin.ultron.extensions.click
-import com.atiurin.ultron.extensions.hasText
-import com.atiurin.ultron.extensions.typeText
+import com.atiurin.sampleapp.helper.*  // your custom methods
+import com.atiurin.ultron.core.espresso.recyclerview.withRecyclerView  // If still using Ultron's withRecyclerView
 
 object ChatSteps {
     fun checkChatIsOpenForAddressee(friendName: String): ChatSteps = apply {
-        UIElementPage.toolbarTitle.hasText(friendName)
+        val actualTitle = UIElementPage.toolbarTitle.getText()
+        if (actualTitle != friendName) {
+            throw AssertionError("Expected friend: '$friendName' but got '$actualTitle'")
+        }
+
+        // or i can just use:
+        // UIElementPage.toolbarTitle.hasText(friendName)
     }
 
     fun enterTextInChat(message: String): ChatSteps = apply {
@@ -18,12 +22,11 @@ object ChatSteps {
     }
 
     fun sendMessage(): ChatSteps = apply {
-        UIElementPage.sendButton.click()
+        UIElementPage.sendButton.tap()
     }
 
     fun assertMessageIsInChat(message: String): ChatSteps = apply {
-        // we can also use : withText(message).isDisplayed()
-        // but i will check it in recycler view
+        // there are too many ways, but i will use withRecyclerView approach:
         withRecyclerView(UIElementPage.messagesList)
             .item(hasDescendant(withText(message)))
             .isDisplayed()
